@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ver1;
+using Zadanie1;
 using System;
 using System.IO;
 
@@ -40,7 +41,7 @@ namespace ver1UnitTests
             var copier = new Copier();
             copier.PowerOff();
 
-            Assert.AreEqual(IDevice.State.off, copier.GetState()); 
+            Assert.AreEqual(IDevice.State.off, copier.GetState());
         }
 
         [TestMethod]
@@ -53,7 +54,7 @@ namespace ver1UnitTests
         }
 
 
-        // weryfikacja, czy po wywoÅ‚aniu metody `Print` i wÅ‚Ä…czonej kopiarce w napisie pojawia siÄ™ sÅ‚owo `Print`
+        // weryfikacja, czy po wywo³aniu metody `Print` i w³¹czonej kopiarce w napisie pojawia siê s³owo `Print`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Print_DeviceOn()
@@ -63,16 +64,16 @@ namespace ver1UnitTests
 
             var currentConsoleOut = Console.Out;
             currentConsoleOut.Flush();
-            using( var consoleOutput = new ConsoleRedirectionToStringWriter() )
+            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
             {
                 IDocument doc1 = new PDFDocument("aaa.pdf");
                 copier.Print(in doc1);
                 Assert.IsTrue(consoleOutput.GetOutput().Contains("Print"));
             }
-            Assert.AreEqual(currentConsoleOut, Console.Out);   
+            Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywoÅ‚aniu metody `Print` i wyÅ‚Ä…czonej kopiarce w napisie NIE pojawia siÄ™ sÅ‚owo `Print`
+        // weryfikacja, czy po wywo³aniu metody `Print` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Print_DeviceOff()
@@ -91,7 +92,7 @@ namespace ver1UnitTests
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywoÅ‚aniu metody `Scan` i wyÅ‚Ä…czonej kopiarce w napisie NIE pojawia siÄ™ sÅ‚owo `Scan`
+        // weryfikacja, czy po wywo³aniu metody `Scan` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Scan`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Scan_DeviceOff()
@@ -110,7 +111,7 @@ namespace ver1UnitTests
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywoÅ‚aniu metody `Scan` i wyÅ‚Ä…czonej kopiarce w napisie pojawia siÄ™ sÅ‚owo `Scan`
+        // weryfikacja, czy po wywo³aniu metody `Scan` i wy³¹czonej kopiarce w napisie pojawia siê s³owo `Scan`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Scan_DeviceOn()
@@ -129,7 +130,7 @@ namespace ver1UnitTests
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy wywoÅ‚anie metody `Scan` z parametrem okreÅ›lajÄ…cym format dokumentu
+        // weryfikacja, czy wywo³anie metody `Scan` z parametrem okreœlaj¹cym format dokumentu
         // zawiera odpowiednie rozszerzenie (`.jpg`, `.txt`, `.pdf`)
         [TestMethod]
         public void Copier_Scan_FormatTypeDocument()
@@ -158,7 +159,7 @@ namespace ver1UnitTests
         }
 
 
-        // weryfikacja, czy po wywoÅ‚aniu metody `ScanAndPrint` i wyÅ‚Ä…czonej kopiarce w napisie pojawiajÄ… siÄ™ sÅ‚owa `Print`
+        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie pojawiaj¹ siê s³owa `Print`
         // oraz `Scan`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
@@ -178,8 +179,8 @@ namespace ver1UnitTests
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywoÅ‚aniu metody `ScanAndPrint` i wyÅ‚Ä…czonej kopiarce w napisie NIE pojawia siÄ™ sÅ‚owo `Print`
-        // ani sÅ‚owo `Scan`
+        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print`
+        // ani s³owo `Scan`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_ScanAndPrint_DeviceOff()
@@ -219,7 +220,7 @@ namespace ver1UnitTests
             copier.ScanAndPrint();
             copier.ScanAndPrint();
 
-            // 5 wydrukÃ³w, gdy urzÄ…dzenie wÅ‚Ä…czone
+            // 5 wydruków, gdy urz¹dzenie w³¹czone
             Assert.AreEqual(5, copier.PrintCounter);
         }
 
@@ -245,7 +246,7 @@ namespace ver1UnitTests
             copier.ScanAndPrint();
             copier.ScanAndPrint();
 
-            // 4 skany, gdy urzÄ…dzenie wÅ‚Ä…czone
+            // 4 skany, gdy urz¹dzenie w³¹czone
             Assert.AreEqual(4, copier.ScanCounter);
         }
 
@@ -278,7 +279,7 @@ namespace ver1UnitTests
             copier.ScanAndPrint();
             copier.ScanAndPrint();
 
-            // 3 wÅ‚Ä…czenia
+            // 3 w³¹czenia
             Assert.AreEqual(3, copier.Counter);
         }
 
