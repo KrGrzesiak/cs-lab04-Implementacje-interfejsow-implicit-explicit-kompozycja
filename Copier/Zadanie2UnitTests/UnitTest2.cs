@@ -36,7 +36,7 @@ namespace Zadanie2UnitTests
     public class UnitTestMultifunctionalDevice
     {
         [TestMethod]
-        public void Copier_GetState_StateOff()
+        public void Device_GetState_StateOff()
         {
             var device = new MultifunctionalDevice();
             device.PowerOff();
@@ -45,7 +45,7 @@ namespace Zadanie2UnitTests
         }
 
         [TestMethod]
-        public void Copier_GetState_StateOn()
+        public void Device_GetState_StateOn()
         {
             var device = new MultifunctionalDevice();
             device.PowerOn();
@@ -53,11 +53,8 @@ namespace Zadanie2UnitTests
             Assert.AreEqual(IDevice.State.on, device.GetState());
         }
 
-
-        // weryfikacja, czy po wywo³aniu metody `Print` i w³¹czonej kopiarce w napisie pojawia siê s³owo `Print`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
-        public void Copier_Print_DeviceOn()
+        public void Device_Send_on()
         {
             var device = new MultifunctionalDevice();
             device.PowerOn();
@@ -66,17 +63,57 @@ namespace Zadanie2UnitTests
             currentConsoleOut.Flush();
             using (var consoleOutput = new ConsoleRedirectionToStringWriter())
             {
-                IDocument doc1 = new PDFDocument("aaa.pdf");
-                device.Print(in doc1);
+                IDocument doc = new TextDocument("ala.txt");
+                string address = "123123123";
+                device.Send(in doc, address);
+                Assert.IsTrue(consoleOutput.GetOutput().Contains("sent"));
+                Assert.IsTrue(consoleOutput.GetOutput().Contains(address));
+            }
+            Assert.AreEqual(currentConsoleOut, Console.Out);
+        }
+
+        [TestMethod]
+        public void Device_Send_off()
+        {
+            var device = new MultifunctionalDevice();
+            device.PowerOff();
+
+            var currentConsoleOut = Console.Out;
+            currentConsoleOut.Flush();
+            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
+            {
+                IDocument doc = new TextDocument("ala.txt");
+                string address = "123123123";
+                device.Send(in doc, address);
+                Assert.IsFalse(consoleOutput.GetOutput().Contains("sent"));
+                Assert.IsFalse(consoleOutput.GetOutput().Contains(address));
+            }
+            Assert.AreEqual(currentConsoleOut, Console.Out);
+        }
+
+        [TestMethod]
+        public void AIO_on()
+        {
+            var device = new MultifunctionalDevice();
+            device.PowerOn();
+
+            var currentConsoleOut = Console.Out;
+            currentConsoleOut.Flush();
+            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
+            {
+                IDocument doc = new TextDocument("fax.pdf");
+                string address = "345678100";
+                device.AIO(address);
                 Assert.IsTrue(consoleOutput.GetOutput().Contains("Print"));
+                Assert.IsTrue(consoleOutput.GetOutput().Contains("Scan"));
+                Assert.IsTrue(consoleOutput.GetOutput().Contains("sent"));
+                Assert.IsTrue(consoleOutput.GetOutput().Contains(address));
             }
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywo³aniu metody `Print` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
-        public void Copier_Print_DeviceOff()
+        public void AIO_off()
         {
             var device = new MultifunctionalDevice();
             device.PowerOff();
@@ -85,203 +122,35 @@ namespace Zadanie2UnitTests
             currentConsoleOut.Flush();
             using (var consoleOutput = new ConsoleRedirectionToStringWriter())
             {
-                IDocument doc1 = new PDFDocument("aaa.pdf");
-                device.Print(in doc1);
+                IDocument doc = new TextDocument("fax.pdf");
+                string address = "345678100";
+                device.AIO(address);
                 Assert.IsFalse(consoleOutput.GetOutput().Contains("Print"));
-            }
-            Assert.AreEqual(currentConsoleOut, Console.Out);
-        }
-
-        // weryfikacja, czy po wywo³aniu metody `Scan` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
-        [TestMethod]
-        public void Copier_Scan_DeviceOff()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOff();
-
-            var currentConsoleOut = Console.Out;
-            currentConsoleOut.Flush();
-            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
-            {
-                IDocument doc1;
-                device.Scan(out doc1);
                 Assert.IsFalse(consoleOutput.GetOutput().Contains("Scan"));
-            }
-            Assert.AreEqual(currentConsoleOut, Console.Out);
-        }
-
-        // weryfikacja, czy po wywo³aniu metody `Scan` i wy³¹czonej kopiarce w napisie pojawia siê s³owo `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
-        [TestMethod]
-        public void Copier_Scan_DeviceOn()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOn();
-
-            var currentConsoleOut = Console.Out;
-            currentConsoleOut.Flush();
-            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
-            {
-                IDocument doc1;
-                device.Scan(out doc1);
-                Assert.IsTrue(consoleOutput.GetOutput().Contains("Scan"));
-            }
-            Assert.AreEqual(currentConsoleOut, Console.Out);
-        }
-
-        // weryfikacja, czy wywo³anie metody `Scan` z parametrem okreœlaj¹cym format dokumentu
-        // zawiera odpowiednie rozszerzenie (`.jpg`, `.txt`, `.pdf`)
-        [TestMethod]
-        public void Copier_Scan_FormatTypeDocument()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOn();
-
-            var currentConsoleOut = Console.Out;
-            currentConsoleOut.Flush();
-            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
-            {
-                IDocument doc1;
-                device.Scan(out doc1, formatType: IDocument.FormatType.JPG);
-                Assert.IsTrue(consoleOutput.GetOutput().Contains("Scan"));
-                Assert.IsTrue(consoleOutput.GetOutput().Contains(".jpg"));
-
-                device.Scan(out doc1, formatType: IDocument.FormatType.TXT);
-                Assert.IsTrue(consoleOutput.GetOutput().Contains("Scan"));
-                Assert.IsTrue(consoleOutput.GetOutput().Contains(".txt"));
-
-                device.Scan(out doc1, formatType: IDocument.FormatType.PDF);
-                Assert.IsTrue(consoleOutput.GetOutput().Contains("Scan"));
-                Assert.IsTrue(consoleOutput.GetOutput().Contains(".pdf"));
-            }
-            Assert.AreEqual(currentConsoleOut, Console.Out);
-        }
-
-
-        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie pojawiaj¹ siê s³owa `Print`
-        // oraz `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
-        [TestMethod]
-        public void Copier_ScanAndPrint_DeviceOn()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOn();
-
-            var currentConsoleOut = Console.Out;
-            currentConsoleOut.Flush();
-            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
-            {
-                device.ScanAndPrint();
-                Assert.IsTrue(consoleOutput.GetOutput().Contains("Scan"));
-                Assert.IsTrue(consoleOutput.GetOutput().Contains("Print"));
-            }
-            Assert.AreEqual(currentConsoleOut, Console.Out);
-        }
-
-        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print`
-        // ani s³owo `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
-        [TestMethod]
-        public void Copier_ScanAndPrint_DeviceOff()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOff();
-
-            var currentConsoleOut = Console.Out;
-            currentConsoleOut.Flush();
-            using (var consoleOutput = new ConsoleRedirectionToStringWriter())
-            {
-                device.ScanAndPrint();
-                Assert.IsFalse(consoleOutput.GetOutput().Contains("Scan"));
-                Assert.IsFalse(consoleOutput.GetOutput().Contains("Print"));
+                Assert.IsFalse(consoleOutput.GetOutput().Contains("sent"));
+                Assert.IsFalse(consoleOutput.GetOutput().Contains(address));
             }
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
         [TestMethod]
-        public void Copier_PrintCounter()
+        public void MultifunctionalDevice_sendCounter()
         {
             var device = new MultifunctionalDevice();
             device.PowerOn();
 
-            IDocument doc1 = new PDFDocument("aaa.pdf");
-            device.Print(in doc1);
-            IDocument doc2 = new TextDocument("aaa.txt");
-            device.Print(in doc2);
-            IDocument doc3 = new ImageDocument("aaa.jpg");
-            device.Print(in doc3);
+            IDocument doc1 = new PDFDocument("fax.pdf");
+            device.Send(in doc1, "123123123");
+            IDocument doc2 = new TextDocument("fax.txt");
+            device.Send(in doc2, "606345980");
+            IDocument doc3 = new ImageDocument("fax.jpg");
+            device.Send(in doc3, "567332145");
 
-            device.PowerOff();
-            device.Print(in doc3);
-            device.Scan(out doc1);
-            device.PowerOn();
+            device.AIO("121212129");
+            device.AIO("345678900");
 
-            device.ScanAndPrint();
-            device.ScanAndPrint();
 
-            // 5 wydruków, gdy urz¹dzenie w³¹czone
-            Assert.AreEqual(5, device.PrintCounter);
+            Assert.AreEqual(5, device.SendCounter);
         }
-
-        [TestMethod]
-        public void Copier_ScanCounter()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOn();
-
-            IDocument doc1;
-            device.Scan(out doc1);
-            IDocument doc2;
-            device.Scan(out doc2);
-
-            IDocument doc3 = new ImageDocument("aaa.jpg");
-            device.Print(in doc3);
-
-            device.PowerOff();
-            device.Print(in doc3);
-            device.Scan(out doc1);
-            device.PowerOn();
-
-            device.ScanAndPrint();
-            device.ScanAndPrint();
-
-            // 4 skany, gdy urz¹dzenie w³¹czone
-            Assert.AreEqual(4, device.ScanCounter);
-        }
-
-        [TestMethod]
-        public void Copier_PowerOnCounter()
-        {
-            var device = new MultifunctionalDevice();
-            device.PowerOn();
-            device.PowerOn();
-            device.PowerOn();
-
-            IDocument doc1;
-            device.Scan(out doc1);
-            IDocument doc2;
-            device.Scan(out doc2);
-
-            device.PowerOff();
-            device.PowerOff();
-            device.PowerOff();
-            device.PowerOn();
-
-            IDocument doc3 = new ImageDocument("aaa.jpg");
-            device.Print(in doc3);
-
-            device.PowerOff();
-            device.Print(in doc3);
-            device.Scan(out doc1);
-            device.PowerOn();
-
-            device.ScanAndPrint();
-            device.ScanAndPrint();
-
-            // 3 w³¹czenia
-            Assert.AreEqual(3, device.Counter);
-        }
-
     }
 }
