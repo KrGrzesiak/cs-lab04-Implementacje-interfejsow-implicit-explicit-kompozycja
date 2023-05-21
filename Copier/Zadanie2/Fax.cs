@@ -8,6 +8,6 @@ namespace ver1
 {
     public interface IFax : IDevice
     {
-        void Send(in IDocument document);
+        void Send(in IDocument document, string address);
     }
 }

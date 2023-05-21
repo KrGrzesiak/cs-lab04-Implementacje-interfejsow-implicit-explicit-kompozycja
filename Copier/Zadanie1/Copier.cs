@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ver1;
 
 namespace Zadanie1
@@ -39,6 +35,7 @@ namespace Zadanie1
             if (GetState() == IDevice.State.on)
             {
                 string curent_DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+                ScanCounter++;
 
                 switch (formatType)
                 {
@@ -55,7 +52,6 @@ namespace Zadanie1
                         Console.WriteLine($"{ curent_DateTime } Scan: { document.GetFileName() }");
                         break;
                 }
-                ScanCounter++;
             }
         }
 
