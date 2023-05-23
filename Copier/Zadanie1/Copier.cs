@@ -22,34 +22,34 @@ namespace Zadanie1
         {
             if (GetState() == IDevice.State.on)
             {
-                string curent_DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
-                Console.WriteLine($"{ curent_DateTime } Print: { document.GetFileName() }");
+                string current_DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+                Console.WriteLine($"{ current_DateTime } Print: { document.GetFileName() }");
                 PrintCounter++;
             }
         }
 
         public void Scan(out IDocument document, IDocument.FormatType formatType = IDocument.FormatType.PDF)
         {
-            document = null;
+            document = new TextDocument("");
 
             if (GetState() == IDevice.State.on)
             {
-                string curent_DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+                string current_DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
                 ScanCounter++;
 
                 switch (formatType)
                 {
                     case IDocument.FormatType.PDF:
                         document = new PDFDocument($"PDFScan{ ScanCounter }.pdf");
-                        Console.WriteLine($"{ curent_DateTime } Scan: { document.GetFileName() }");
+                        Console.WriteLine($"{ current_DateTime } Scan: { document.GetFileName() }");
                         break;
                     case IDocument.FormatType.JPG:
                         document = new ImageDocument($"ImageScan{ ScanCounter }.jpg");
-                        Console.WriteLine($"{ curent_DateTime } Scan: { document.GetFileName() }");
+                        Console.WriteLine($"{ current_DateTime } Scan: { document.GetFileName() }");
                         break;
                     case IDocument.FormatType.TXT:
                         document = new TextDocument($"TextScan{ ScanCounter }.txt");
-                        Console.WriteLine($"{ curent_DateTime } Scan: { document.GetFileName() }");
+                        Console.WriteLine($"{ current_DateTime } Scan: { document.GetFileName() }");
                         break;
                 }
             }
