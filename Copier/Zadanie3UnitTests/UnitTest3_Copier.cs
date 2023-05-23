@@ -33,7 +33,7 @@ namespace ver3UnitTests
 
 
     [TestClass]
-    public class UnitTestCopier_zad3
+    public class UnitTestMultidimensionalDevice_zad3
     {
         [TestMethod]
         public void Copier_GetState_StateOff()
@@ -54,7 +54,7 @@ namespace ver3UnitTests
         }
 
 
-        /*// weryfikacja, czy po wywo³aniu metody `Print` i w³¹czonej kopiarce w napisie pojawia siê s³owo `Print`
+        // weryfikacja, czy po wywo³aniu metody `Print` i w³¹czonej kopiarce w napisie pojawia siê s³owo `Print`
         // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Print_DeviceOn()
@@ -281,7 +281,7 @@ namespace ver3UnitTests
 
             // 3 w³¹czenia
             Assert.AreEqual(3, copier.Counter);
-        }*/
+        }
 
     }
 }
