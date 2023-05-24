@@ -39,20 +39,23 @@ namespace Zadanie3
 
         public void Print(in IDocument document)
         {
-            PrintCounter = printer.Print_counter;
             printer.Print(in document);
+            PrintCounter = printer.Print_counter;
         }
 
         public void Scan(out IDocument document, IDocument.FormatType formatType = IDocument.FormatType.PDF)
         {
-            ScanCounter = scanner.Scan_counter;
             scanner.Scan(out document, formatType);
+            ScanCounter = scanner.Scan_counter;
         }
 
         public void Send(in IDocument document, string address)
         {
-            SendCounter++;
-            Console.WriteLine($"Sent: { document.GetFileName() } to: { address }");
+            if (GetState() == IDevice.State.on)
+            {
+                SendCounter++;
+                Console.WriteLine($"Sent: { document.GetFileName() } to: { address }");
+            }
         }
 
         public void ScanAndPrint()
@@ -74,6 +77,9 @@ namespace Zadanie3
                 Scan(out IDocument document, IDocument.FormatType.JPG);
                 Send(in document, address);
                 Print(in document);
+
+                PrintCounter = printer.Print_counter;
+                ScanCounter = scanner.Scan_counter;
             }
         }
     }

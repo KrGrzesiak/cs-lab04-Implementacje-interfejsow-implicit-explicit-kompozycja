@@ -33,7 +33,7 @@ namespace ver3UnitTests
 
 
     [TestClass]
-    public class UnitTestMultidimensionalDevice_zad3
+    public class UnitTestCopier_zad3
     {
         [TestMethod]
         public void Copier_GetState_StateOff()
@@ -55,7 +55,6 @@ namespace ver3UnitTests
 
 
         // weryfikacja, czy po wywo³aniu metody `Print` i w³¹czonej kopiarce w napisie pojawia siê s³owo `Print`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Print_DeviceOn()
         {
@@ -74,7 +73,6 @@ namespace ver3UnitTests
         }
 
         // weryfikacja, czy po wywo³aniu metody `Print` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Print_DeviceOff()
         {
@@ -93,7 +91,6 @@ namespace ver3UnitTests
         }
 
         // weryfikacja, czy po wywo³aniu metody `Scan` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
         [TestMethod]
         public void Copier_Scan_DeviceOff()
         {
@@ -111,8 +108,7 @@ namespace ver3UnitTests
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywo³aniu metody `Scan` i wy³¹czonej kopiarce w napisie pojawia siê s³owo `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
+        // weryfikacja, czy po wywo³aniu metody `Scan` i w³¹czonej kopiarce w napisie pojawia siê s³owo `Scan`
         [TestMethod]
         public void Copier_Scan_DeviceOn()
         {
@@ -159,9 +155,7 @@ namespace ver3UnitTests
         }
 
 
-        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie pojawiaj¹ siê s³owa `Print`
-        // oraz `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
+        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie pojawiaj¹ siê s³owa `Print` oraz `Scan`
         [TestMethod]
         public void Copier_ScanAndPrint_DeviceOn()
         {
@@ -179,9 +173,7 @@ namespace ver3UnitTests
             Assert.AreEqual(currentConsoleOut, Console.Out);
         }
 
-        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print`
-        // ani s³owo `Scan`
-        // wymagane przekierowanie konsoli do strumienia StringWriter
+        // weryfikacja, czy po wywo³aniu metody `ScanAndPrint` i wy³¹czonej kopiarce w napisie NIE pojawia siê s³owo `Print` ani s³owo `Scan`
         [TestMethod]
         public void Copier_ScanAndPrint_DeviceOff()
         {
